@@ -1,0 +1,35 @@
+html, body{
+    height: 100%;
+    width: 100%;
+    
+    
+}
+.form-control{
+    width: 70%;
+    background-color: #212529;
+    border: solid;
+    border-width: 0.5px;
+    border-color: white;
+}
+.form-label{
+    color: white;
+}
+.form-text{
+    color: white;
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+.container{
+    border-radius: 50px;
+    background-color: black;
+    width: 500px;
+    height: 500px; 
+    border: solid;
+}
+.mb-3{
+    margin-left: 100px;
+}
