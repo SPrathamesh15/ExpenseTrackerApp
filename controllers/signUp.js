@@ -5,7 +5,12 @@ exports.postAddUser = async (req, res, next) => {
       const username = req.body.username;
       const useremail = req.body.useremail;
       const userpassword = req.body.userpassword;
-  
+      const existingUser = await User.findOne({ where: { useremail: useremail } });
+      if (existingUser) {
+        console.log('user exists!')
+        return res.status(400).json({ error: 'User already exists' });
+        
+      }
       const data = await User.create({
         username: username,
         useremail: useremail,
