@@ -23,9 +23,11 @@ function logInUser(e){
         // alert("User Doesn't Exists! You can Sign Up")
         // errorMessageContainer.textContent = err;
         if (err == "AxiosError: Request failed with status code 404"){
+            alert('Error 404: User not Found')
             console.log("user Doesn't exists")
             errorMessageContainer.textContent = "User Does not Exists!";
-        }else if (err == "AxiosError: Request failed with status code 400"){
+        }else if (err == "AxiosError: Request failed with status code 401"){
+            alert('Error 401: User Not Authorized')
             console.log('Password Does not Match!')
             errorMessageContainer.textContent = "Password Does not Match!";
         }

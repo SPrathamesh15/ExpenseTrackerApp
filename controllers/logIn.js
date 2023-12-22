@@ -13,7 +13,7 @@ exports.postLogInUser = async (req, res, next) => {
             if (existingUserPassword != req.body.userpassword){
                 console.log("User password matching",existingUserPassword, req.body.userpassword)
                 console.log("Password Doesn't Match!")
-                return res.status(400).json({ error: "User Password Doesn't Match!"});
+                return res.status(401).json({ error: "User Password Doesn't Match!"});
             }
       }
       const data = {
