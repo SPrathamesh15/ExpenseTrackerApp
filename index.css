@@ -1,0 +1,84 @@
+.editbutton {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 3px 10px;
+    text-align: center;
+    float: right;
+    margin-right: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    }
+  .editbutton:hover{
+    background-color: transparent;
+    color: black;
+    border: solid;
+    border-width: 1px;
+  }
+  .form {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    
+  }
+  .input {
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    margin-left: 10px;
+    
+  }
+  .input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; 
+  }
+  .header{
+    padding: 50px;
+
+  }
+  .input-container .input {
+    flex: 1;
+    
+    margin-right: 10px;
+  }
+  .select {
+    padding: 5px;
+    margin-left: 10px;
+    padding-right: 50px;
+    background-color: #212529;
+    color: white;
+    border-radius: 10px;
+  }
+  .expense-btn {
+    background-color: #0f0f0f;
+    color: white;
+    padding-right: 324px;
+    padding-left: 300px;
+    text-align: center;
+    font-size: 20px;
+    margin-left: 150px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
+  .expense-btn:hover{
+    background-color: transparent;
+    color: black;
+
+  }
+  .delete-btn{
+    background-color: red;
+    color: white;
+    float: right;
+    border: none;
+    padding: 3px 7px 3px 7px;
+    font-size: 15px;
+    border-radius: 3px;
+  }
+  .delete-btn:hover{
+    background-color: transparent;
+    color: black;
+    border: solid;
+    border-color: red; 
+    border-width: 2px;
+  }
