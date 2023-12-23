@@ -1,5 +1,10 @@
 const User = require('../models/signup');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+
+function generateAccessToken(id, name){
+    return jwt.sign({userId: id, name: name}, '932ufhapy9y39hohaldh983yr839hrfoaoh3q0yrhgin4huhtpaibp2q01phpqhqu0uhpdnnqp9y43875y4gbfpiuhfadnv')
+  }
 
 exports.postLogInUser = async (req, res, next) => {
     try {
@@ -24,7 +29,7 @@ exports.postLogInUser = async (req, res, next) => {
         };
 
         console.log(data);
-        res.status(200).json({ loggedInUser: data });
+        res.status(200).json({ loggedInUser: data, token: generateAccessToken(existingUser.id, existingUser.username) });
         console.log('Logged In');
     } catch (err) {
         console.error('Error in postLogInUser:', err);

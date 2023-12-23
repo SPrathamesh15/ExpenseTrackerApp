@@ -16,7 +16,6 @@ function removeItem(e) {
     }
 }
 
-
 function handleFormSubmission(e) {
     e.preventDefault();
     // Get expense details from the form
@@ -42,7 +41,7 @@ function handleFormSubmission(e) {
 
     var deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
-    deleteBtn.appendChild(document.createTextNode('X'));
+    deleteBtn.appendChild(document.createTextNode('Delete Expense'));
 
 
     li.appendChild(deleteBtn);
@@ -55,7 +54,9 @@ function handleFormSubmission(e) {
         category: categoryValue
     };
     console.log('ExpenseDetails:', expenseDetails);
-    axios.post("http://localhost:3000/expense/add-expense", expenseDetails)
+    const token = localStorage.getItem('token')
+    axios.post("http://localhost:3000/expense/add-expense", expenseDetails, {
+        headers: {'Authorization' : token}})
         .then((response) => {
             console.log(response);
         })
@@ -80,7 +81,10 @@ document.addEventListener('DOMContentLoaded', handlePageLoad);
 
 function handlePageLoad() {
     // Making a GET request to retrieve data from the backend server
-    axios.get("http://localhost:3000/expense/get-expenses")
+    const token = localStorage.getItem('token')
+    axios.get("http://localhost:3000/expense/get-expenses", {
+        headers: {'Authorization' : token}
+    })
         .then((response) => {
             // Displaying the data on the screen and in the console
             showNewExpenseOnScreen(response.data.allExpenses);
@@ -104,19 +108,19 @@ function showNewExpenseOnScreen(expenses) {
         // Creating elements with appropriate classes
         const expenseAmountElement = document.createElement('span');
         expenseAmountElement.className = 'expenseAmount';
-        expenseAmountElement.innerText = `Expense Amount: ${expenses[i].expenseAmount}  - `;
+        expenseAmountElement.innerHTML = `<strong>Expense Amount: </strong>₹${expenses[i].expenseAmount}  <strong>-</strong> `;
 
         const descriptionElement = document.createElement('span');
         descriptionElement.className = 'description';
-        descriptionElement.innerText = `Expense Description: ${expenses[i].expenseDescription}  - `;
+        descriptionElement.innerHTML = `<strong>Expense Description: </strong>${expenses[i].expenseDescription}  <strong>-</strong> `;
 
         const categoryElement = document.createElement('span');
         categoryElement.className = 'category';
-        categoryElement.innerText = `Expense Category: ${expenses[i].category}`;
+        categoryElement.innerHTML = `<strong>Expense Category: </strong>${expenses[i].category}`;
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
-        deleteBtn.appendChild(document.createTextNode('X'));
+        deleteBtn.appendChild(document.createTextNode('Delete Expense'));
         // Using a closure to capture the current value of userId
         deleteBtn.onclick = (function (expensesId) {
             return function () {
@@ -135,7 +139,10 @@ function showNewExpenseOnScreen(expenses) {
 }
 
 function deleteExpense(expenseId) {
-    axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`)
+    const token = localStorage.getItem('token')
+    axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`, {
+        headers: {'Authorization' : token}
+    })
         .then((response) => {
             removeExpenseFromScreen(expenseId);
         })

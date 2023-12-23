@@ -1,12 +1,12 @@
 // expenseRoutes.js
 const express = require('express');
 const expenseController = require('../controllers/index');
-
+const userAuthentication = require('../middleware/auth')
 const router = express.Router();
 
-router.get('/add-expense', expenseController.getAddExpense);
-router.post('/add-expense', expenseController.postAddExpense);
-router.get('/get-expenses', expenseController.getAllExpenses);
-router.delete('/delete-expense/:expenseId', expenseController.deleteExpense);
+router.get('/add-expense', userAuthentication.Authenticate, expenseController.getAddExpense);
+router.post('/add-expense', userAuthentication.Authenticate, expenseController.postAddExpense);
+router.get('/get-expenses',userAuthentication.Authenticate, expenseController.getAllExpenses);
+router.delete('/delete-expense/:expenseId', userAuthentication.Authenticate, expenseController.deleteExpense);
 
 module.exports = router;
