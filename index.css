@@ -5,15 +5,36 @@
     margin-left: 100px;
 }
 
+.premium-btn{
+    background-color: #0eeab7;
+    padding: 5px;
+    border-radius: 8px;
+    color: black;
+    font-weight: 700;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 20px;
+    transition: 0.3s;
+}
+.premium-btn:hover{
+    background-color: #06fac1;
+    border: solid;
+    border-width: 5px;
+    border-color: #068466;
+}
 .btn.btn-primary{
     margin-left: 100px
 }
-
+.premium-status{
+    color: #06fac1;
+    font-size: 30px;
+}
 .header{
     color: white;
     text-align: center;
     padding-top: 30px;
     font-size: 50px;
+
 }
 .list-group-item {
     padding-top: 20px;
@@ -44,10 +65,11 @@
     padding-left: 15px;
     padding-right: 15px;
     color: white;
-    transition: 0.2s;
+    transition: 0.3s;
 }
 .delete-btn:hover{
     background-color: red;
+    border: none;
 }
 
 .select{
@@ -61,12 +83,7 @@
 .labels{
     padding-bottom: 10px;
 }
-.form{
-    background-color: #F8CADD;
-    padding: 15px;
-    color: #FE2172;
-    font-family: cursive;
-}
+
 .form-container{
     margin-left: 100px;
 }
@@ -77,7 +94,7 @@
 }
 .col-6{
     border: solid;
-    border-color: #FE2172;
+    border-color: #0eeab7;
     border-left-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
@@ -85,8 +102,9 @@
     padding-bottom: 100px;
 }
 li:nth-child(even) {
-    background-color: #F8CADD;
+    background-color: #0eeab7;
     margin-top: 10px;
+    border: none;
 }
 li:nth-child(odd) {
     background-color: white;

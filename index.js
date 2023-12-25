@@ -1,9 +1,38 @@
 var form = document.getElementById('addForm');
 var itemList = document.getElementById('items');
+var buyPremium = document.getElementById('buy-premium')
 
+var premiumStatusElement = document.getElementById('premium-status');
 // Adding a single event listener to handle form submission
 form.addEventListener('submit', handleFormSubmission);
+buyPremium.addEventListener('click', BuyPremium);
 
+async function BuyPremium(e){
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {'Authorization' : token }})
+    console.log(response)
+    var options = {
+        "key": response.data.key_id,
+        "order_id": response.data.order.id,
+        
+        //this handler will handle the success payment
+        "handler": async function (response) {
+            console.log('Razorpay response:', response); 
+            await axios.post('http://localhost:3000/purchase/updatetransactionstatus', {
+                order_id: options.order_id,
+                payment_id: response.razorpay_payment_id
+            }, { headers: { 'Authorization': token } })
+            alert('Congratulations! You are a Premium User Now.');
+        }
+    }
+    const rzp1 = new Razorpay(options)
+    rzp1.open()
+    e.preventDefault()
+    rzp1.on('payment.failed', function(response){
+        console.log(response)
+        alert('Something Went Wrong!')
+    })
+}
 // delete event
 itemList.addEventListener('click', removeItem);
 
@@ -78,8 +107,7 @@ function handleFormSubmission(e) {
 }
 
 document.addEventListener('DOMContentLoaded', handlePageLoad);
-
-function handlePageLoad() {
+async function handlePageLoad() {
     // Making a GET request to retrieve data from the backend server
     const token = localStorage.getItem('token')
     axios.get("http://localhost:3000/expense/get-expenses", {
@@ -93,6 +121,23 @@ function handlePageLoad() {
         .catch((err) => {
             console.error('Error while fetching data:', err);
         });
+    // for premium status
+    try {
+        const response = await axios.get("http://localhost:3000/purchase/premium-status", {
+            headers: { 'Authorization': token }
+        });
+        const isPremiumUser = response.data.permuimStatus;
+        console.log(isPremiumUser)
+        if (isPremiumUser){
+            premiumStatusElement.innerText = "You are a Premium User"
+            buyPremium.style.display = 'none'
+        } else{
+            console.log('not a premium user')
+        }
+        
+    } catch (err) {
+        console.error('Error while fetching premium status:', err);
+    }
 }
 
 function showNewExpenseOnScreen(expenses) {
