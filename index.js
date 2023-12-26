@@ -19,6 +19,7 @@ async function ShowLeaderboard(e){
         showLeaderboardOnScreen(response.data.allLeaderBoardUsers)
     }).catch(err=> console.log(err))
 }
+
 function showLeaderboardOnScreen(expenses) {
     const parentNode = document.getElementById('points-table');
     parentNode.innerHTML = '';
@@ -34,7 +35,7 @@ function showLeaderboardOnScreen(expenses) {
 
         const totalExpenseAmountElement = document.createElement('span');
         totalExpenseAmountElement.className = 'totalExpenseAmount';
-        totalExpenseAmountElement.innerHTML = `<strong>Total Expense Amount: </strong>₹${expenses[i].totalAmount}`;
+        totalExpenseAmountElement.innerHTML = `<strong>Total Expense Amount: </strong>₹${expenses[i].totalExpense}`;
 
         // Appending elements to the li
         li.appendChild(userNameElement);

@@ -25,7 +25,12 @@ const UserDetails = sequelize.define('user', {
     type: Sequelize.BOOLEAN, // Change the data type to BOOLEAN
     allowNull: false,
     defaultValue: false // Set the default value to false
-  }
+  },
+  totalExpense: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
   
 });
 

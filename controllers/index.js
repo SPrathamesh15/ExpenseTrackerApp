@@ -1,6 +1,5 @@
-// expenseController.js
 const Expense = require('../models/index');
-
+const User = require('../models/signup')
 exports.getAddExpense = (req, res, next) => {
   res.render('expense/add-expense', {
     pageTitle: 'Add Expense',
@@ -13,18 +12,26 @@ exports.postAddExpense = async (req, res, next) => {
     const expenseAmount = req.body.expenseAmount;
     const expenseDescription = req.body.expenseDescription;
     const category = req.body.category;
+    const userId = req.user.id;
 
-    const data = await Expense.create({
+    // Create a new expense
+    const expense = await Expense.create({
       expenseAmount: expenseAmount,
       expenseDescription: expenseDescription,
       category: category,
-      userId: req.user.id
+      userId: userId
     });
 
-    res.status(201).json({ newExpenseDetails: data });
+    // Update totalExpense in UserDetails
+    const user = await User.findByPk(userId);
+    console.log(user)
+    user.totalExpense = user.totalExpense + parseInt(expenseAmount);
+    await user.save();
+
+    res.status(201).json({ newExpenseDetails: expense });
     console.log('Expense added to server');
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: err.message });
     console.error(err);
   }
 };
