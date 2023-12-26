@@ -1,11 +1,47 @@
 var form = document.getElementById('addForm');
 var itemList = document.getElementById('items');
 var buyPremium = document.getElementById('buy-premium')
+var table = document.getElementById('points-table')
+var showLeaderboard = document.getElementById('show-leaderboard')
 
 var premiumStatusElement = document.getElementById('premium-status');
 // Adding a single event listener to handle form submission
 form.addEventListener('submit', handleFormSubmission);
 buyPremium.addEventListener('click', BuyPremium);
+showLeaderboard.addEventListener('click', ShowLeaderboard)
+
+async function ShowLeaderboard(e){
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:3000/premium/leaderboard', { headers: {'Authorization' : token }})
+    .then(response => {
+        console.log('leaderboard',response)
+        showLeaderboardOnScreen(response.data.allExpenses)
+    }).catch(err=> console.log(err))
+}
+function showLeaderboardOnScreen(expenses) {
+    const parentNode = document.getElementById('points-table');
+    parentNode.innerHTML = '';
+    for (var i = 0; i < expenses.length; i++) {
+        console.log('showing the user details on page1: ', expenses[i]);
+        const li = document.createElement('li');
+        li.className = 'lists';
+        li.id = expenses[i].userId; // Assuming userId is the identifier for the user
+
+        const userNameElement = document.createElement('span');
+        userNameElement.className = 'userName';
+        userNameElement.innerHTML = `<strong>User Name: </strong>${expenses[i].username}  <strong>-</strong> `;
+
+        const totalExpenseAmountElement = document.createElement('span');
+        totalExpenseAmountElement.className = 'totalExpenseAmount';
+        totalExpenseAmountElement.innerHTML = `<strong>Total Expense Amount: </strong>₹${expenses[i].totalAmount}`;
+
+        // Appending elements to the li
+        li.appendChild(userNameElement);
+        li.appendChild(totalExpenseAmountElement);
+
+        parentNode.appendChild(li);
+    }
+}
 
 async function BuyPremium(e){
     const token = localStorage.getItem('token');
@@ -133,6 +169,7 @@ async function handlePageLoad() {
             buyPremium.style.display = 'none'
         } else{
             console.log('not a premium user')
+            showLeaderboard.style.display = 'none'
         }
         
     } catch (err) {
@@ -143,9 +180,9 @@ async function handlePageLoad() {
 function showNewExpenseOnScreen(expenses) {
     const parentNode = document.getElementById('items');
     parentNode.innerHTML = '';
-    console.log('showing expenses on the screen', expenses)
+    // console.log('showing expenses on the screen', expenses)
     for (var i = 0; i < expenses.length; i++) {
-        console.log('showing the user details on page: ', expenses[i])
+        console.log('showing the user details on page@: ', expenses[i])
         const li = document.createElement('li');
         li.className = 'list-group-item';
         li.id = expenses[i].id;

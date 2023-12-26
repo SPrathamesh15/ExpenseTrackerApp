@@ -19,7 +19,6 @@
 .premium-btn:hover{
     background-color: #06fac1;
     border: solid;
-    border-width: 5px;
     border-color: #068466;
 }
 .btn.btn-primary{
@@ -40,6 +39,11 @@
     padding-top: 20px;
     width: 500px;
 }
+.lists{
+    padding: 15px;
+    border-radius: 20px;    
+    text-align: center;
+}
 .form-group{
     padding-bottom: 10px;
     width: 300px;
@@ -57,15 +61,17 @@
 }
 
 .delete-btn{
-    background-color: rgb(243, 113, 113);
+    background-color: #e66a5e;
     border: none;
     border-radius: 20px;
     float: right;
     padding: 5px;
+    font-weight: 600;
     padding-left: 15px;
     padding-right: 15px;
-    color: white;
+    color: black;
     transition: 0.3s;
+
 }
 .delete-btn:hover{
     background-color: red;
