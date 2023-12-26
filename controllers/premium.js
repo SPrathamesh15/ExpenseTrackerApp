@@ -5,22 +5,21 @@ const Sequelize = require('sequelize');
 exports.showLeaderBoard = async (req, res) => {
     try {
         // Find all expenses and group by unique userId, include UserDetails for user names
-        const expenses = await Expense.findAll({
+        const leaderboardofusers = await User.findAll({
             attributes: [
-                [Sequelize.literal('User.username'), 'username'],
-                [Sequelize.fn('SUM', Sequelize.col('expenseAmount')), 'totalAmount'],
+                'id', 'username', 
+                [Sequelize.fn('SUM', Sequelize.col('expenses.expenseAmount')), 'totalAmount'],
             ],
             include: [
                 {
-                    model: User,
+                    model: Expense,
                     attributes: [],
                 },
             ],
-            group: ['userId'],
-            order: [[Sequelize.fn('SUM', Sequelize.col('expenseAmount')), 'DESC']],
+            group: ['user.id'],
+            order: [['totalAmount', 'DESC']],
         });
-
-        res.status(200).json({ allExpenses: expenses });
+        res.status(200).json({ allLeaderBoardUsers: leaderboardofusers });
         console.log('expenses grouped by userId and sorted by totalAmount in descending order');
     } catch (err) {
         res.status(500).json({ error: err.message });

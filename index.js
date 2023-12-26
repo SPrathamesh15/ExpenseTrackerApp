@@ -3,6 +3,7 @@ var itemList = document.getElementById('items');
 var buyPremium = document.getElementById('buy-premium')
 var table = document.getElementById('points-table')
 var showLeaderboard = document.getElementById('show-leaderboard')
+var leaderboardTag = document.getElementById('leaderboard-tag')
 
 var premiumStatusElement = document.getElementById('premium-status');
 // Adding a single event listener to handle form submission
@@ -15,14 +16,14 @@ async function ShowLeaderboard(e){
     axios.get('http://localhost:3000/premium/leaderboard', { headers: {'Authorization' : token }})
     .then(response => {
         console.log('leaderboard',response)
-        showLeaderboardOnScreen(response.data.allExpenses)
+        showLeaderboardOnScreen(response.data.allLeaderBoardUsers)
     }).catch(err=> console.log(err))
 }
 function showLeaderboardOnScreen(expenses) {
     const parentNode = document.getElementById('points-table');
     parentNode.innerHTML = '';
     for (var i = 0; i < expenses.length; i++) {
-        console.log('showing the user details on page1: ', expenses[i]);
+        console.log('showing the user details on page: ', expenses[i]);
         const li = document.createElement('li');
         li.className = 'lists';
         li.id = expenses[i].userId; // Assuming userId is the identifier for the user
@@ -170,6 +171,7 @@ async function handlePageLoad() {
         } else{
             console.log('not a premium user')
             showLeaderboard.style.display = 'none'
+            leaderboardTag.innerText = ''
         }
         
     } catch (err) {
