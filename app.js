@@ -10,6 +10,7 @@ const userLogInRoutes = require('./routes/logIn');
 const expenseRoutes = require('./routes/index');
 const purchaseRoutes = require('./routes/purchase')
 const leaderBoardRoutes = require('./routes/premium')
+const forgotPasswordRoutes = require('./routes/forgotpassword')
 
 const Expense = require('./models/index');
 const User = require('./models/signup');
@@ -24,6 +25,7 @@ app.use('/user', userLogInRoutes)
 app.use('/expense', expenseRoutes);
 app.use('/purchase', purchaseRoutes)
 app.use('/premium', leaderBoardRoutes)
+app.use('/password', forgotPasswordRoutes)
 
 //Association one to many
 User.hasMany(Expense)
