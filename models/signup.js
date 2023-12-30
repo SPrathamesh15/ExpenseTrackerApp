@@ -22,9 +22,9 @@ const UserDetails = sequelize.define('user', {
     allowNull: false
   },
   ispremiumuser: {
-    type: Sequelize.BOOLEAN, // Change the data type to BOOLEAN
+    type: Sequelize.BOOLEAN,
     allowNull: false,
-    defaultValue: false // Set the default value to false
+    defaultValue: false 
   },
   totalExpense: {
     type: Sequelize.INTEGER,

@@ -1,57 +1,68 @@
-const Sib = require('sib-api-v3-sdk')
-const {createTransport} = require('nodemailer')
-const dotenv = require('dotenv')
-dotenv.config()
+const Sib = require('sib-api-v3-sdk');
+const { createTransport } = require('nodemailer');
+const dotenv = require('dotenv');
+const uuidv4 = require('uuid').v4;
+const ForgotPasswordRequest = require('../models/ForgotPasswordRequests'); 
+const User = require('../models/signup');
+
+dotenv.config();
 
 exports.forgotPassword = async (req, res) => {
-    // const client = Sib.ApiClient.instance
-    // const apikey = client.authentications['api-key']
-    // apikey.apikey = process.env.FORGOT_PASSWORD_API_KEY
-
-    // console.log('ApiKey: :', apikey.apikey)
-    // const tranEmailApi = new Sib.TransactionalEmailsApi()
-
-    // const sender = {
-    //     email: 'sprathamesh354@gmail.com'
-    // }
-
-    // const receivers = [{
-    //     email: req.body.emails
-    // }]
-
-    // tranEmailApi.sendTransacEmail({
-    //     sender,
-    //     to: receivers,
-    //     subject: 'Forgot Password!',
-    //     textContent: `
-    //     This email is to inform you that you forgot your password so we will send you this link so you can reset your password`
-    // })
-    // .then(response=>console.log(response))
-    // .catch(err=>console.log('backend error: ',err))
-
     const transporter = createTransport({
         host: 'smtp-relay.sendinblue.com',
         port: 587,
         auth: {
-            user: "sprathamesh354@gmail.com",
-            pass: process.env.FORGOT_PASSWORD_API_KEY
-        }
-    })
+            user: 'sprathamesh354@gmail.com',
+            pass: process.env.FORGOT_PASSWORD_API_KEY,
+        },
+    });
 
-    const mailOptions = {
-        from: "sprathamesh354@gmail.com",
-        to: req.body.emails,
-        subject: "Forgot Password!",
-        text: "This mail regarding forgot password we will share you a link so you can reset your password"
+    const resetToken = uuidv4(); // It Generates a unique reset token
+    const resetPasswordURL = `http://localhost:3000/password/reset-password/${resetToken}`;
+
+    try {
+        // Finding the user based on the provided email
+        const user = await User.findOne({
+            where: {
+                useremail: req.body.emails,
+            },
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        // Saving the reset token in the database
+        await ForgotPasswordRequest.create({
+            id: resetToken,
+            userId: user.id,
+            isActive: true,
+        });
+
+        const mailOptions = {
+            from: 'sprathamesh354@gmail.com',
+            to: req.body.emails,
+            subject: 'Reset Password!',
+            html: `<h1>Reset your Password</h1>
+                   <p>Click the following link to reset your password:</p>
+                   <a href="${resetPasswordURL}">Reset Password</a>`,
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+        const email = req.body.emails;
+        console.log(email);
+
+        // Sending a response to the client indicating success
+        res.status(200).json({ message: 'Password reset email sent successfully.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error.' });
     }
-
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            console.log(error)
-        } else{
-            console.log('Email sent: ' + info.response)
-        }
-    })
-    const email = req.body.emails
-    console.log(email)
-}
+};
