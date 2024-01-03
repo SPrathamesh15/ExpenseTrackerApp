@@ -8,11 +8,17 @@ const Expense = sequelize.define('expense', {
     allowNull: false,
     primaryKey: true
   },
-  expenseAmount: {
+  income: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0,
   },
-  expenseDescription: {
+  expense: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  Description: {
     type: Sequelize.STRING,
     allowNull: false
   },

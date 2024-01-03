@@ -4,6 +4,7 @@ var buyPremium = document.getElementById('buy-premium')
 var table = document.getElementById('points-table')
 var showLeaderboard = document.getElementById('show-leaderboard')
 var leaderboardTag = document.getElementById('leaderboard-tag')
+var report = document.getElementById('report')
 
 var premiumStatusElement = document.getElementById('premium-status');
 // Adding a single event listener to handle form submission
@@ -89,18 +90,24 @@ function handleFormSubmission(e) {
     var expenseAmt = document.getElementById('expenseamt').value;
     var expenseDescription = document.getElementById('description').value;
     var categoryValue = document.getElementById('category').value;
-
+    var income = document.getElementById('income').checked;
+    console.log('income', income)
     var li = document.createElement('li');
     li.className = 'list-group-item';
 
-
     var bigSpace = ' - ';
 
-    var expenseAmts = 'Exepense Amount: ' + expenseAmt;
-    var expenseDescriptions = 'Exepense Description: ' + expenseDescription;
-    var categoryValues = 'Exepense Category: ' + categoryValue;
-
-    li.appendChild(document.createTextNode(expenseAmts));
+    var incomes = 'Income: ' + expenseAmt;
+    var expenses = 'Expense: ' + expenseAmt;
+    var expenseDescriptions = 'Description: ' + expenseDescription;
+    var categoryValues = 'Category: ' + categoryValue;
+    
+    if (income){
+        li.appendChild(document.createTextNode(incomes));
+    } else{
+        li.appendChild(document.createTextNode(expenses));
+    }
+    
     li.appendChild(document.createTextNode(bigSpace));
     li.appendChild(document.createTextNode(expenseDescriptions));
     li.appendChild(document.createTextNode(bigSpace));
@@ -118,7 +125,8 @@ function handleFormSubmission(e) {
     var expenseDetails = {
         expenseAmount: expenseAmt,
         expenseDescription: expenseDescription,
-        category: categoryValue
+        category: categoryValue,
+        Income: income
     };
     console.log('ExpenseDetails:', expenseDetails);
     const token = localStorage.getItem('token')
@@ -169,10 +177,12 @@ async function handlePageLoad() {
         if (isPremiumUser){
             premiumStatusElement.innerText = "You are a Premium User"
             buyPremium.style.display = 'none'
+            
         } else{
             console.log('not a premium user')
             showLeaderboard.style.display = 'none'
             leaderboardTag.innerText = ''
+            report.style.display = 'none'
         }
         
     } catch (err) {
@@ -183,38 +193,50 @@ async function handlePageLoad() {
 function showNewExpenseOnScreen(expenses) {
     const parentNode = document.getElementById('items');
     parentNode.innerHTML = '';
-    // console.log('showing expenses on the screen', expenses)
+
     for (var i = 0; i < expenses.length; i++) {
-        console.log('showing the user details on page@: ', expenses[i])
         const li = document.createElement('li');
         li.className = 'list-group-item';
         li.id = expenses[i].id;
 
+        const income = expenses[i].income;
+        const expense = expenses[i].expense;
+
+        // Set background color based on income or expense
+        if (income !== 0) {
+            li.style.backgroundColor = '#0eeab7';
+        } else if (expense !== 0) {
+            li.style.backgroundColor = '#e63946';
+        }
+
         // Creating elements with appropriate classes
-        const expenseAmountElement = document.createElement('span');
-        expenseAmountElement.className = 'expenseAmount';
-        expenseAmountElement.innerHTML = `<strong>Expense Amount: </strong>₹${expenses[i].expenseAmount}  <strong>-</strong> `;
+        const incomeElement = document.createElement('span');
+        incomeElement.className = 'expenseAmount';
+        incomeElement.innerHTML = `<strong>Income: </strong>₹${income}  <strong>-</strong> `;
+
+        const expenseElement = document.createElement('span');
+        expenseElement.className = 'expenseAmount';
+        expenseElement.innerHTML = `<strong>Expense: </strong>₹${expense}  <strong>-</strong> `;
 
         const descriptionElement = document.createElement('span');
         descriptionElement.className = 'description';
-        descriptionElement.innerHTML = `<strong>Expense Description: </strong>${expenses[i].expenseDescription}  <strong>-</strong> `;
+        descriptionElement.innerHTML = `<strong>Description: </strong>${expenses[i].Description}  <strong>-</strong> `;
 
         const categoryElement = document.createElement('span');
         categoryElement.className = 'category';
-        categoryElement.innerHTML = `<strong>Expense Category: </strong>${expenses[i].category}`;
+        categoryElement.innerHTML = `<strong>Category: </strong>${expenses[i].category}`;
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
-        deleteBtn.appendChild(document.createTextNode('Delete Expense'));
-        // Using a closure to capture the current value of userId
-        deleteBtn.onclick = (function (expensesId) {
+        deleteBtn.appendChild(document.createTextNode('Delete'));
+        deleteBtn.onclick = (function (expenseId) {
             return function () {
-                deleteExpense(expensesId);
+                deleteExpense(expenseId);
             };
         })(expenses[i].id);
 
         // Appending elements to the li
-        li.appendChild(expenseAmountElement);
+        li.appendChild(income !== 0 ? incomeElement : expenseElement);
         li.appendChild(descriptionElement);
         li.appendChild(categoryElement);
         li.appendChild(deleteBtn);
@@ -222,6 +244,7 @@ function showNewExpenseOnScreen(expenses) {
         parentNode.appendChild(li);
     }
 }
+
 
 function deleteExpense(expenseId) {
     const token = localStorage.getItem('token')

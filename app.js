@@ -12,6 +12,7 @@ const purchaseRoutes = require('./routes/purchase')
 const leaderBoardRoutes = require('./routes/premium')
 const forgotPasswordRoutes = require('./routes/forgotpassword')
 const resetPasswordRoutes = require('./routes/resetpassword')
+const reportsRoutes = require('./routes/report')
 
 const Expense = require('./models/index');
 const User = require('./models/signup');
@@ -29,6 +30,7 @@ app.use('/premium', leaderBoardRoutes)
 app.use('/password', forgotPasswordRoutes)
 //route for backend part of reset password
 app.use('/password', resetPasswordRoutes)
+app.use('/report', reportsRoutes)
 
 const path = require('path');
 const fs = require('fs');

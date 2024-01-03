@@ -15,20 +15,27 @@
         <div class="container">
             <div>
                 <h1 id="header-title" class='header'>
-                    <span style='color: #0eeab7'>Add</span> Expense
+                    <span style='color: #0eeab7'>Add</span> Expense 
                     <span id="premium-status" class="premium-status"></span>
-                    <button type="submit" class="premium-btn" id='buy-premium'>Buy Premium</button>
+                    <button class="button-64" role="button" id='buy-premium' style='margin-left: 820px; margin-top: -50px;'><span class="text">Buy Premium</span></button>
                 </h1>
             </div>
             <div class="row">
                 <div class="col-6">
                     <form id = 'addForm'>
-                        <div class="form-container" style='margin-top: 30px'>
-                            <div class="form-group">
-                                <label class='labels'>Choose Expense Amount:</label>
+                        <div class="form-container" style='margin-top: 0px'>
+                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" class="btn-check" name="btnradio" id="income" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="income">Income</label>
+
+                                <input type="radio" class="btn-check" name="btnradio" id="expense" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="expense">Expense</label>
+                            </div>
+                            <div class="form-group" style='margin-top: 20px'>
+                                <label class='labels'>Enter Amount:</label>
                                 <input type="text" class="form-control" id="expenseamt">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style='margin-top: 10px'>
                                 <label class='labels'>Enter Description:</label>
                                 <textarea class="form-control" id="description" rows="3"></textarea>
                             </div>
@@ -46,13 +53,13 @@
                                 <option value="Travelling">Travelling</option>
                               </select>
                       </div> 
-                      
-                        <button type="submit" class="btn btn-primary" style='margin-top: 20px'>Submit</button>
+                        <button type="submit" class="btn btn-primary" style='margin-top: 20px'>Submit</button><button type="click" onclick="window.open('C:/Users/sprat/Downloads/sharpenerProjects/Backend Expense Tracker/report.html', '_blank')" id ="report"class="btn btn-primary" style='margin-top: 20px;margin-left: 10px'>Report</button>
                     </form>
-                    <button type="submit" class="premium-btn" id='show-leaderboard' style='margin-left: 100px; margin-top: 15px;'>Show LeaderBoard</button>
+                    <button class="bn30" role="button" id='show-leaderboard' style='margin-left: 100px; margin-top: 15px;'>Show LeaderBoard</button>
                 </div>
                 
                 <div class="col-4" style='margin-top: 50px'>
+                    <h1 style='color: white; text-align: center; margin-left: 300px' >Expenses</h1>
                     <ul id="items" class="list-group"> </ul>
                 </div>
 
@@ -60,7 +67,7 @@
             </div>
         </div>
         <div class = 'container'style='margin-top: 50px'>
-            <h1 style='color: white; text-align: center;'>LeaderBoard</h1>
+            <h1 style='color: white; text-align: center;' id = 'leaderboard-tag'>LeaderBoard</h1>
             <ul id="points-table" class="list-group" style='width: 1000px'> </ul>
         </div>
     </header>
