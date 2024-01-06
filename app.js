@@ -17,6 +17,8 @@ const reportsRoutes = require('./routes/report')
 const Expense = require('./models/index');
 const User = require('./models/signup');
 const Order = require('./models/orders')
+const filesDownloaded = require('./models/filesDownloaded')
+
 const forgotPasswordRequest = require('./models/ForgotPasswordRequests')
 app.use(bodyParser.urlencoded());
 app.use(express.json());
@@ -44,6 +46,10 @@ app.get('/password/reset-password/:token', (req, res) => {
 //Association one to many
 User.hasMany(Expense)
 Expense.belongsTo(User)
+
+//Association between FilesDownloaded and user
+User.hasMany(filesDownloaded)
+filesDownloaded.belongsTo(User)
 
 //Association between order and user
 User.hasMany(Order)

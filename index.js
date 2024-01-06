@@ -4,13 +4,79 @@ var buyPremium = document.getElementById('buy-premium')
 var table = document.getElementById('points-table')
 var showLeaderboard = document.getElementById('show-leaderboard')
 var leaderboardTag = document.getElementById('leaderboard-tag')
+var downloadedFilesTag = document.getElementById('downloadedFiles-tag')
 var report = document.getElementById('report')
-
+var downloads = document.getElementById('download')
 var premiumStatusElement = document.getElementById('premium-status');
 // Adding a single event listener to handle form submission
 form.addEventListener('submit', handleFormSubmission);
 buyPremium.addEventListener('click', BuyPremium);
 showLeaderboard.addEventListener('click', ShowLeaderboard)
+downloads.addEventListener('click', download)
+
+async function download(e){
+    e.preventDefault()
+    const token = localStorage.getItem('token');
+    axios.get("http://localhost:3000/expense/download", {
+        headers: {'Authorization' : token}})
+        .then(response => {
+            console.log('download', response)
+            if (response.status === 200){
+                var a = document.createElement('a')
+                a.href = response.data.fileURL
+                a.download = 'myexpense.csv'
+                a.click()
+                postFiles(a.href)
+                getFiles()
+            }
+        })
+        .catch(err=> console.log(err))
+}
+async function postFiles(fileURL){
+    const token = localStorage.getItem('token');
+    console.log('fileURl from frontend',fileURL)
+    const fileURLS = {
+        fileUrls: fileURL
+    }
+    axios.post("http://localhost:3000/expense/postfileurls", fileURLS, {
+        headers: {'Authorization' : token}})
+        .then(response => console.log(response))
+        .catch(err => console.log('postfiles frontend',err))
+}
+
+async function getFiles(){
+    const token = localStorage.getItem('token');
+    axios.get("http://localhost:3000/expense/getfileurls", {
+        headers: {'Authorization' : token}})
+        .then(response => {
+            console.log('getfiles: ', response.data)
+            showDownloadedFiles(response.data.allFileURLS)
+            downloadedFilesTag.style.display = 'block';
+        })
+        .catch(err => console.log('postfiles frontend',err))
+}
+
+function showDownloadedFiles(fileUrls) {
+    const parentNode = document.getElementById('points-table');
+    console.log('showDownloadedFiles')
+    parentNode.innerHTML = '';
+    
+    for (var i = 0; i < fileUrls.length; i++) {
+        console.log('showing the Files details on page: ', fileUrls[i]);
+        const li = document.createElement('li');
+        li.className = 'lists';
+        li.id = fileUrls[i].userId;
+
+        const fileUrlElement = document.createElement('span');
+        fileUrlElement.className = 'fileUrl';
+        fileUrlElement.innerHTML = `<strong>FileURL ${i+1}: </strong>${fileUrls[i].fileURL}`;
+        // Appending elements to the li
+        li.appendChild(fileUrlElement);
+
+        parentNode.appendChild(li);
+    }
+}
+
 
 async function ShowLeaderboard(e){
     const token = localStorage.getItem('token');
@@ -18,6 +84,9 @@ async function ShowLeaderboard(e){
     .then(response => {
         console.log('leaderboard',response)
         showLeaderboardOnScreen(response.data.allLeaderBoardUsers)
+        showLeaderboard.style.display = 'block';
+        leaderboardTag.style.display = 'block';
+        downloadedFilesTag.style.display = 'none';
     }).catch(err=> console.log(err))
 }
 
@@ -28,7 +97,7 @@ function showLeaderboardOnScreen(expenses) {
         console.log('showing the user details on page: ', expenses[i]);
         const li = document.createElement('li');
         li.className = 'lists';
-        li.id = expenses[i].userId; // Assuming userId is the identifier for the user
+        li.id = expenses[i].userId;
 
         const userNameElement = document.createElement('span');
         userNameElement.className = 'userName';
@@ -177,12 +246,15 @@ async function handlePageLoad() {
         if (isPremiumUser){
             premiumStatusElement.innerText = "You are a Premium User"
             buyPremium.style.display = 'none'
+            leaderboardTag.style.display = 'none'; 
+            downloadedFilesTag.style.display = 'none';
             
         } else{
             console.log('not a premium user')
             showLeaderboard.style.display = 'none'
             leaderboardTag.innerText = ''
             report.style.display = 'none'
+            downloads.style.display = 'none'
         }
         
     } catch (err) {
@@ -201,13 +273,6 @@ function showNewExpenseOnScreen(expenses) {
 
         const income = expenses[i].income;
         const expense = expenses[i].expense;
-
-        // Set background color based on income or expense
-        if (income !== 0) {
-            li.style.backgroundColor = '#0eeab7';
-        } else if (expense !== 0) {
-            li.style.backgroundColor = '#e63946';
-        }
 
         // Creating elements with appropriate classes
         const incomeElement = document.createElement('span');

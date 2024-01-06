@@ -8,5 +8,8 @@ router.get('/add-expense', userAuthentication.Authenticate, expenseController.ge
 router.post('/add-expense', userAuthentication.Authenticate, expenseController.postAddExpense);
 router.get('/get-expenses',userAuthentication.Authenticate, expenseController.getAllExpenses);
 router.delete('/delete-expense/:expenseId', userAuthentication.Authenticate, expenseController.deleteExpense);
+router.get('/download', userAuthentication.Authenticate, expenseController.downloadExpenses)
+router.post('/postfileurls', userAuthentication.Authenticate, expenseController.postFileURLS)
+router.get('/getfileurls', userAuthentication.Authenticate, expenseController.getFileURLS)
 
 module.exports = router;

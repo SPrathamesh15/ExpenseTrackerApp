@@ -14,7 +14,7 @@
   letter-spacing: 0.05rem;
 }
 #income + .btn-outline-primary{
-  color: green;
+  color: #0eeab7;
   border-color: white;
   
 }
@@ -23,15 +23,15 @@
   border-color: white;
 }
 #income:checked + .btn-outline-primary {
-  background-color: green;
-  color: white;
+  background-color: #0eeab7;
+  color: black;
   border-color: white;
   font-weight: 700;
 }
 
 /* Custom styles for the Expense radio button */
 #expense:checked + .btn-outline-primary {
-  background-color: red;
+  background-color: #e63946;
   color: white;
   border-color: white;
   font-weight: 700;
@@ -51,6 +51,7 @@
     -webkit-transition: box-shadow 0.25s;
     transition: box-shadow 0.25s;
     color: white;
+    margin-top: 15px;
   }
   
   .bn30 .text {
@@ -60,6 +61,14 @@
     background-image: linear-gradient(45deg, #4568dc, #b06ab3);
   }
   
+
+.lists {
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+
   .bn30:after {
     content: "";
     border-radius: 18px;
@@ -272,7 +281,7 @@ li:nth-child(even) {
     border: none;
 }
 li:nth-child(odd) {
-    background-color: #e63946;
+    background-color: white;
     margin-top: 10px;
     border: none;
 }

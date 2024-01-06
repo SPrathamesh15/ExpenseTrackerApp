@@ -1,6 +1,9 @@
 const Expense = require('../models/index');
 const User = require('../models/signup')
 const sequelize = require('../util/database')
+const S3Services = require('../services/S3services')
+const FilesDownloaded = require('../models/filesDownloaded')
+
 exports.getAddExpense = (req, res, next) => {
   res.render('expense/add-expense', {
     pageTitle: 'Add Expense',
@@ -16,25 +19,34 @@ exports.postAddExpense = async (req, res, next) => {
     const category = req.body.category;
     const userId = req.user.id;
 
-    // Create a new expense
-    const expense = await Expense.create({
-      expenseAmount: expenseAmount,
-      expenseDescription: expenseDescription,
-      category: category,
-      userId: userId
-    },
-    { transaction: t }
+    // Checking if the selected radio button is 'income' or 'expense'
+    const isIncome = req.body.Income
+    console.log('isincome: ',isIncome)
+    // Creating a new expense
+    const Details = await Expense.create(
+      {
+        [isIncome ? 'income' : 'expense']: expenseAmount,
+        Description: expenseDescription,
+        category: category,
+        userId: userId,
+      },
+      { transaction: t }
     );
 
-    // Update totalExpense in UserDetails
+    // Updating totalExpense or totalIncome in UserDetails based on the radio button selection
     const user = await User.findByPk(userId, { transaction: t });
-    console.log(user)
-    user.totalExpense = user.totalExpense + parseInt(expenseAmount);
-    await user.save({ transaction: t });
+    if (user) {
+      if (isIncome) {
+        user.totalIncome = user.totalIncome + parseInt(expenseAmount);
+      } else {
+        user.totalExpense = user.totalExpense + parseInt(expenseAmount);
+      }
+      await user.save({ transaction: t });
+    }
 
     await t.commit();
 
-    res.status(201).json({ newExpenseDetails: expense });
+    res.status(201).json({ newExpenseDetails: Details });
     console.log('Expense added to server');
   } catch (err) {
     await t.rollback();
@@ -42,6 +54,7 @@ exports.postAddExpense = async (req, res, next) => {
     console.error(err);
   }
 };
+
 
 exports.getAllExpenses = async (req, res, next) => {
   try {
@@ -52,6 +65,48 @@ exports.getAllExpenses = async (req, res, next) => {
   }
 };
 
+exports.downloadExpenses = async (req, res) => {
+  try {
+    const expenses = await req.user.getExpenses();
+    console.log(expenses)
+    const stringifiedExpenses = JSON.stringify(expenses);
+    const userId = req.user.id
+    const filename = `Expense${userId}/${new Date()}.txt`;
+    const fileURL = await S3Services.uploadToS3(stringifiedExpenses, filename);
+    res.status(200).json({ fileURL, success: true })
+  } catch (err){
+    console.log(err)
+    res.status(500).json({ fileURL: '', success: false, err: err })
+  }
+}
+
+exports.postFileURLS = async (req, res) => {
+  try{
+  const fileURL = req.body.fileUrls
+  const userId = req.user.id;
+
+  console.log('file url from backend',fileURL)
+  const Details = await FilesDownloaded.create(
+    { fileURL: fileURL,
+      userId: userId }
+  )
+    res.status(201).json({ newFilesUrlDetails: Details });
+    console.log('Files added to server!');
+  } catch (err){
+    console.log(err)
+    res.status(500).json({ success: false, err: err })
+  }
+}
+
+exports.getFileURLS = async (req, res) => {
+  try {
+    const files = await FilesDownloaded.findAll({ where: { userId: req.user.id }});
+    res.status(200).json({ allFileURLS: files });
+  } catch (err){
+    console.log(err)
+    res.status(500).json({ success: false, err: err })
+  }
+}
 
 exports.deleteExpense = async (req, res, next) => {
   const expenseId = req.params.expenseId;
