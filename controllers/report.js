@@ -9,7 +9,10 @@ exports.getAllReports = async (req, res, next) => {
     let startDate, endDate;
 
     // Determine start and end dates based on the time period parameter
-    const timePeriod = req.query.timePeriod; // Assuming the timePeriod parameter is provided in the query
+    const timePeriod = req.query.timePeriod;
+    const page = req.query.page || 1;
+    const limit = 10; // Number of records per page
+    const offset = (page - 1) * limit;
 
     if (timePeriod === 'daily') {
       startDate = sequelize.literal('CURDATE()');
@@ -33,7 +36,6 @@ exports.getAllReports = async (req, res, next) => {
         'Description',
         'category',
         [sequelize.literal('DATE(createdAt)'), 'Date'],
-        // Add other columns you need
       ],
       where: {
         userId: req.user.id,
@@ -41,9 +43,26 @@ exports.getAllReports = async (req, res, next) => {
           [Op.between]: [startDate, endDate],
         },
       },
+      limit: limit,
+      offset: offset,
     });
 
-    res.status(200).json({ allExpenses: expenses });
+    const totalExpenses = await Expense.count({
+      where: {
+          userId: req.user.id,
+          createdAt: {
+              [Op.between]: [startDate, endDate],
+          },
+      },
+  });
+
+  const totalPages = Math.ceil(totalExpenses / limit);
+
+  res.status(200).json({
+      allExpenses: expenses,
+      totalPages: totalPages,
+      currentPage: page,
+  });
   } catch (err) {
     res.status(500).json({ error: err.message });
     console.log('error year', err);

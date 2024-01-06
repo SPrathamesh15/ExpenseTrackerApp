@@ -11,20 +11,22 @@ var weeklySection = document.getElementById('weekly-section');
 var monthlySection = document.getElementById('monthly-section');
 var yearlySection = document.getElementById('yearly-section');
 
-dailyBtn.addEventListener('click', () => showTable('daily'));
-weeklyBtn.addEventListener('click', () => showTable('weekly'));
-monthlyBtn.addEventListener('click', () => showTable('monthly'));
-yearlyBtn.addEventListener('click', () => showTable('yearly'));
+dailyBtn.addEventListener('click', () => showTable('daily', 1));
+weeklyBtn.addEventListener('click', () => showTable('weekly', 1));
+monthlyBtn.addEventListener('click', () => showTable('monthly', 1));
+yearlyBtn.addEventListener('click', () => showTable('yearly', 1));
+
 
 async function handlePageLoad(e) {
-    await showTable('daily');
+    const page = 1
+    await showTable('daily', page);
 }
 
-async function showTable(timePeriod) {
+async function showTable(timePeriod, page = 1) {
     const token = localStorage.getItem('token');
     console.log('timePeriod: ', timePeriod)
     try {
-        const response = await axios.get(`http://localhost:3000/report/get-report?timePeriod=${timePeriod}`, {
+        const response = await axios.get(`http://localhost:3000/report/get-report?timePeriod=${timePeriod}&page=${page}`, {
             headers: { 'Authorization': token },
         });
 
@@ -38,19 +40,20 @@ async function showTable(timePeriod) {
 function showReportsOnScreen(response, timePeriod) {
     const tableBody = document.getElementById(`${timePeriod}-table`).getElementsByTagName('tbody')[0];
 
-    // Assuming that the API response contains an array named 'allExpenses'
     const expenses = response.data.allExpenses;
+    const totalPages = response.data.totalPages;
+    const currentPage = response.data.currentPage;
 
-    // Clear existing rows from the table body
+    // Clearing existing rows from the table body
     tableBody.innerHTML = '';
 
-    // Iterate over expenses and create table rows
+    // Iterating over expenses and create table rows
     expenses.forEach(expense => {
         const row = document.createElement('tr');
 
         // Extracting relevant columns from the expense object
-        const rawDate = expense.Date.split('T')[0]; // Assuming createdAt is a timestamp
-        const date = formatDate(rawDate); // Format the date
+        const rawDate = expense.Date.split('T')[0]; 
+        const date = formatDate(rawDate);
 
         const description = expense.Description;
         const category = expense.category;
@@ -69,6 +72,19 @@ function showReportsOnScreen(response, timePeriod) {
         // Appending the row to the table body
         tableBody.appendChild(row);
     });
+    const paginationContainer = document.getElementById('pagination-container');
+    paginationContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.addEventListener('click', () => showTable(timePeriod, i));
+        paginationContainer.appendChild(button);
+    }
+
+    // Highlight the current page button
+    const currentPageButton = document.querySelector(`#pagination-container button:nth-child(${currentPage})`);
+    currentPageButton.classList.add('active');
 }
 
 function formatDate(rawDate) {
@@ -80,13 +96,13 @@ function formatDate(rawDate) {
 
 
 function showSections(timePeriod) {
-    // Hide all sections
+    // Hiding all sections
     dailySection.style.display = 'none';
     weeklySection.style.display = 'none';
     monthlySection.style.display = 'none';
     yearlySection.style.display = 'none';
 
-    // Show the specific section based on the timePeriod
+    // Showing the specific section based on the timePeriod
     if (timePeriod === 'daily') {
         dailySection.style.display = 'block';
     } else if (timePeriod === 'weekly') {
