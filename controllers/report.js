@@ -1,18 +1,15 @@
 const Expense = require('../models/index');
 const sequelize = require('../util/database');
-
-// Controller
 const { Op } = require('sequelize');
 
 exports.getAllReports = async (req, res, next) => {
   try {
     let startDate, endDate;
-
-    // Determine start and end dates based on the time period parameter
     const timePeriod = req.query.timePeriod;
     const page = req.query.page || 1;
-    const limit = 10; // Number of records per page
-    const offset = (page - 1) * limit;
+    const itemsPerPage = req.query.itemsPerPage ? parseInt(req.query.itemsPerPage, 10) : 10;
+    const offset = (page - 1) * itemsPerPage;
+    const limit = itemsPerPage;
 
     if (timePeriod === 'daily') {
       startDate = sequelize.literal('CURDATE()');

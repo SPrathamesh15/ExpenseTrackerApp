@@ -10,9 +10,18 @@
 </head>
 <body class='body'>
     <div class="container">
-    <h1 style='text-align: center; color: #06fac1;font-wight:700 ;margin-top: 50px;'>Day to Day Expenses</h1>
+    <h1 style='text-align: center; color: #06fac1;font-weight:300 ;margin-top: 50px; font-size: 50px; letter-spacing: 0.4rem; border: solid; border-width: 5px; border-color: white; padding: 10px'>REPORT</h1>
 
     <div style='margin-top: 50px; margin-left: 150px'>
+      <label for="itemsPerPage" style='color:white'>Items per Page:</label>
+  <select id="itemsPerPage" onchange="updateItemsPerPage()">
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="30">30</option>
+    <option value="40">40</option>
+    <option value="50">50</option>
+  </select>
       <button class='report' id="daily-btn">Show Daily Expenses</button>
       <button class='report' id="weekly-btn">Show Weekly Expenses</button>
       <button class='report' id="monthly-btn">Show Monthly Expenses</button>
