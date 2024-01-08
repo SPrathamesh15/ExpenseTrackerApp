@@ -2,8 +2,12 @@ const express = require('express')
 var cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express();
-
+const helmet = require('helmet')
+const morgan = require('morgan')
 const sequelize = require('./util/database');
+
+const path = require('path');
+const fs = require('fs');
 
 const userRoutes = require('./routes/signUp');
 const userLogInRoutes = require('./routes/logIn');
@@ -23,7 +27,10 @@ const forgotPasswordRequest = require('./models/ForgotPasswordRequests')
 app.use(bodyParser.urlencoded());
 app.use(express.json());
 app.use(cors());
+app.use(helmet())
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a'})
+app.use(morgan('combined', { stream: accessLogStream }))
 app.use('/user', userRoutes)
 app.use('/user', userLogInRoutes)
 app.use('/expense', expenseRoutes);
@@ -34,8 +41,7 @@ app.use('/password', forgotPasswordRoutes)
 app.use('/password', resetPasswordRoutes)
 app.use('/report', reportsRoutes)
 
-const path = require('path');
-const fs = require('fs');
+
 
 // Define the route to show the page
 app.get('/password/reset-password/:token', (req, res) => {
