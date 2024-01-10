@@ -20,33 +20,35 @@ function getTimePeriod() {
 dailyBtn.addEventListener('click', () => {
     localStorage.setItem('currentPage', 'daily')
     currentTimePeriod = localStorage.getItem('currentPage');
-    showTable(currentTimePeriod, 1);
+    let itemsPerPage = localStorage.getItem('itemsPerPage');
+    showTable(currentTimePeriod, 1, itemsPerPage);
 });
 
 weeklyBtn.addEventListener('click', () => {
     localStorage.setItem('currentPage', 'weekly')
     currentTimePeriod = localStorage.getItem('currentPage');
-    showTable(currentTimePeriod, 1);
+    let itemsPerPage = localStorage.getItem('itemsPerPage');
+    showTable(currentTimePeriod, 1, itemsPerPage);
 });
 
 monthlyBtn.addEventListener('click', () => {
     localStorage.setItem('currentPage', 'monthly')
     currentTimePeriod = localStorage.getItem('currentPage');
-    showTable(currentTimePeriod, 1);
+    let itemsPerPage = localStorage.getItem('itemsPerPage');
+    showTable(currentTimePeriod, 1, itemsPerPage);
 });
 
 yearlyBtn.addEventListener('click', () => {
     localStorage.setItem('currentPage', 'yearly')
     currentTimePeriod = localStorage.getItem('currentPage');
-    showTable(currentTimePeriod, 1);
+    let itemsPerPage = localStorage.getItem('itemsPerPage');
+    showTable(currentTimePeriod, 1, itemsPerPage);
 });
 function getCurrentPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const currentPage = parseInt(urlParams.get('page')) || 1;
     return currentPage;
 }
-
-
 
 async function handlePageLoad(e) {
     let itemsPerPage = localStorage.getItem('itemsPerPage');
@@ -67,8 +69,6 @@ async function handlePageLoad(e) {
     console.log(getTimePeriod(), currentPage, itemsPerPage)
     showTable(getTimePeriod(), currentPage, itemsPerPage);
 }
-
-
 
 function updateItemsPerPage() {
     const itemsPerPageSelect = document.getElementById('itemsPerPage');

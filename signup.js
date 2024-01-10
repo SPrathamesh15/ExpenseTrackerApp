@@ -1,5 +1,6 @@
 var addForm = document.getElementById('addform')
 var errorMessageContainer = document.getElementById('error-message');
+var successMessageContainer = document.getElementById('success-message');
 
 addForm.addEventListener('submit', addUser)
 
@@ -18,6 +19,9 @@ function addUser(e) {
     axios.post('http://localhost:3000/user/add-user', userDetails)
     .then((response) => {
         console.log(response)
+        alert('You have Signed Up Successfully! Now you can Log In')
+        successMessageContainer.textContent = "User Signed Up Successfully!";
+        window.location.href = 'C:/Users/sprat/Downloads/sharpenerProjects/Backend Expense Tracker/logIn.html'
     })
     .catch(err => {
         // alert('Uer Already Exists! You can Log In')

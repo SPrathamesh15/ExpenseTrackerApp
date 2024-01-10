@@ -21,16 +21,25 @@ exports.showLeaderBoard = async (req, res) => {
         // });
 
         //final optimized way
+        const page = parseInt(req.query.page) || 1;
+        const itemsPerPage = 5; // Set the number of items per page
+        const offset = (page - 1) * itemsPerPage;
+
         const leaderboardofusers = await User.findAll({
             attributes: [
-                'id', 
+                'id',
                 'username',
                 'totalExpense',
             ],
+            offset: offset,
+            limit: itemsPerPage,
             order: [['totalExpense', 'DESC']],
         });
-        res.status(200).json({ allLeaderBoardUsers: leaderboardofusers });
-        console.log('expenses grouped by userId and sorted by totalAmount in descending order');
+
+        const totalCount = await User.count();
+        const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+        res.status(200).json({ allLeaderBoardUsers: leaderboardofusers, totalPages, currentPage: page });
     } catch (err) {
         res.status(500).json({ error: err.message });
         console.error(err);

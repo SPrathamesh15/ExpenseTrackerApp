@@ -9,10 +9,10 @@ dotenv.config();
 
 exports.forgotPassword = async (req, res) => {
     const transporter = createTransport({
-        host: 'smtp-relay.sendinblue.com',
-        port: 587,
+        host: process.env.SENDINBLUE_HOST_NAME,
+        port: process.env.SENDINBLUE_PORT_NAME,
         auth: {
-            user: 'sprathamesh354@gmail.com',
+            user: process.env.USER_EMAIL,
             pass: process.env.FORGOT_PASSWORD_API_KEY,
         },
     });
@@ -40,7 +40,7 @@ exports.forgotPassword = async (req, res) => {
         });
 
         const mailOptions = {
-            from: 'sprathamesh354@gmail.com',
+            from: process.env.USER_EMAIL,
             to: req.body.emails,
             subject: 'Reset Password!',
             html: `<h1>Reset your Password</h1>

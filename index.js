@@ -44,20 +44,42 @@ async function postFiles(fileURL){
         .catch(err => console.log('postfiles frontend',err))
 }
 
-async function getFiles(){
+// Update the getFiles function in your frontend JavaScript
+async function getFiles(page=1) {
     const token = localStorage.getItem('token');
-    axios.get("http://localhost:3000/expense/getfileurls", {
-        headers: {'Authorization' : token}})
+    axios.get(`http://localhost:3000/expense/getfileurls?page=${page}`, {
+        headers: { 'Authorization': token }
+    })
         .then(response => {
-            console.log('getfiles: ', response.data)
-            showDownloadedFiles(response.data.allFileURLS)
+            console.log('getfiles: ', response.data);
+            showDownloadedFiles(response.data.allFileURLS);
             downloadedFilesTag.style.display = 'block';
+            displayFilesPagination(response.data.totalPages, response.data.currentPage);
         })
-        .catch(err => console.log('postfiles frontend',err))
+        .catch(err => console.log('postfiles frontend', err));
 }
 
+function displayFilesPagination(totalPages, currentPage) {
+    const paginationContainer = document.getElementById('files-pagination-container');
+    paginationContainer.innerHTML = ''; // Clear previous controls
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.className = 'pagination-btn';
+        pageButton.innerText = i;
+        pageButton.addEventListener('click', () => getFiles(i));
+
+        if (i === currentPage) {
+            pageButton.classList.add('active');
+        }
+
+        paginationContainer.appendChild(pageButton);
+    }
+}
+
+
 function showDownloadedFiles(fileUrls) {
-    const parentNode = document.getElementById('points-table');
+    const parentNode = document.getElementById('downloaded-table');
     console.log('showDownloadedFiles')
     parentNode.innerHTML = '';
     
@@ -78,16 +100,41 @@ function showDownloadedFiles(fileUrls) {
 }
 
 
-async function ShowLeaderboard(e){
+async function ShowLeaderboard(page=1) {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:3000/premium/leaderboard', { headers: {'Authorization' : token }})
-    .then(response => {
-        console.log('leaderboard',response)
-        showLeaderboardOnScreen(response.data.allLeaderBoardUsers)
-        showLeaderboard.style.display = 'block';
-        leaderboardTag.style.display = 'block';
-        downloadedFilesTag.style.display = 'none';
-    }).catch(err=> console.log(err))
+    axios.get(`http://localhost:3000/premium/leaderboard?page=${page}`, { headers: { 'Authorization': token } })
+        .then(response => {
+            console.log('leaderboard', response);
+            showLeaderboardOnScreen(response.data.allLeaderBoardUsers);
+            showLeaderboard.style.display = 'block';
+            leaderboardTag.style.display = 'block';
+            downloadedFilesTag.style.display = 'none';
+            displayLeaderboardPagination(response.data.totalPages, response.data.currentPage);
+        })
+        .catch(err => console.log(err));
+}
+
+
+function displayLeaderboardPagination(totalPages, currentPage) {
+    const paginationContainer = document.getElementById('leaderboard-pagination-container');
+    paginationContainer.innerHTML = ''; // Clear previous controls
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.className = 'pagination-btn';
+        pageButton.innerText = i;
+
+        // Pass the page number to the ShowLeaderboard function
+        pageButton.addEventListener('click', () => ShowLeaderboard(i));
+
+        if (i === currentPage) {
+            pageButton.classList.add('active');
+            console.log('pagebutton')
+        }
+
+        paginationContainer.appendChild(pageButton);
+        console.log('pagebutton2')
+    }
 }
 
 function showLeaderboardOnScreen(expenses) {
@@ -184,7 +231,7 @@ function handleFormSubmission(e) {
 
     var deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
-    deleteBtn.appendChild(document.createTextNode('Delete Expense'));
+    deleteBtn.appendChild(document.createTextNode('Delete'));
 
 
     li.appendChild(deleteBtn);
@@ -207,7 +254,7 @@ function handleFormSubmission(e) {
         .catch((err) => {
             document.body.innerHTML = document.body.innerHTML +
                 "<h3 style='color:red'> Something Went wrong!!!</h4>",
-                console.log(err);
+                console.log('Expense posting: ',err);
         });
 
     // Creating a new list item
@@ -230,8 +277,12 @@ async function handlePageLoad() {
     })
         .then((response) => {
             // Displaying the data on the screen and in the console
-            showNewExpenseOnScreen(response.data.allExpenses);
-            console.log('handlepageload data', response.data.allExpenses);
+            const { expenses, totalPages, currentPage } = response.data;
+            showNewExpenseOnScreen(expenses);
+
+            // Display pagination controls
+            displayPaginationControls(totalPages, currentPage);
+            console.log('handlepageload data', expenses);
         })
         .catch((err) => {
             console.error('Error while fetching data:', err);
@@ -261,6 +312,39 @@ async function handlePageLoad() {
         console.error('Error while fetching premium status:', err);
     }
 }
+function displayPaginationControls(totalPages, currentPage) {
+    const paginationContainer = document.getElementById('pagination-container');
+    paginationContainer.innerHTML = ''; // Clear previous controls
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = document.createElement('button');
+      pageButton.className = 'pagination-btn'
+      pageButton.innerText = i;
+      pageButton.addEventListener('click', () => goToPage(i));
+  
+      if (i === currentPage) {
+        pageButton.classList.add('active');
+      }
+  
+      paginationContainer.appendChild(pageButton);
+    }
+  }
+  
+  async function goToPage(page) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`http://localhost:3000/expense/get-expenses?page=${page}`, {
+        headers: { 'Authorization': token }
+      });
+  
+      const { expenses, totalPages, currentPage } = response.data;
+      showNewExpenseOnScreen(expenses);
+  
+      // Update pagination controls
+      displayPaginationControls(totalPages, currentPage);
+    } catch (err) {
+      console.error('Error while fetching data:', err);
+    }
+  }
 
 function showNewExpenseOnScreen(expenses) {
     const parentNode = document.getElementById('items');
@@ -329,3 +413,4 @@ function removeExpenseFromScreen(expenseId) {
         parentNode.removeChild(childNodeTobeDeleted);
     }
 }
+

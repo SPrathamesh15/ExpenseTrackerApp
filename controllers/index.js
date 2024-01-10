@@ -56,14 +56,27 @@ exports.postAddExpense = async (req, res, next) => {
 };
 
 
+// Update the getAllExpenses route in your controller
 exports.getAllExpenses = async (req, res, next) => {
   try {
-    const expenses = await Expense.findAll({ where: { userId: req.user.id }});
-    res.status(200).json({ allExpenses: expenses });
+    const page = req.query.page || 1; // Get the page from the query parameters or default to 1
+    const itemsPerPage = 5;
+    const offset = (page - 1) * itemsPerPage;
+
+    const { count, rows: expenses } = await Expense.findAndCountAll({
+      where: { userId: req.user.id },
+      offset,
+      limit: itemsPerPage,
+    });
+
+    const totalPages = Math.ceil(count / itemsPerPage);
+
+    res.status(200).json({ expenses, totalPages, currentPage: page });
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.downloadExpenses = async (req, res) => {
   try {
@@ -98,15 +111,28 @@ exports.postFileURLS = async (req, res) => {
   }
 }
 
+// Update the getFileURLS route in your controller
 exports.getFileURLS = async (req, res) => {
   try {
-    const files = await FilesDownloaded.findAll({ where: { userId: req.user.id }});
-    res.status(200).json({ allFileURLS: files });
-  } catch (err){
-    console.log(err)
-    res.status(500).json({ success: false, err: err })
+      const page = parseInt(req.query.page) || 1; // Get the page from the query parameters or default to 1
+      const itemsPerPage = 5; // Set the number of items per page
+      const offset = (page - 1) * itemsPerPage;
+
+      const files = await FilesDownloaded.findAll({
+          where: { userId: req.user.id },
+          offset,
+          limit: itemsPerPage,
+      });
+      const totalCount = await FilesDownloaded.count();
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+      res.status(200).json({ allFileURLS: files, totalPages, currentPage: page });
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({ success: false, err: err });
   }
-}
+};
+
 
 exports.deleteExpense = async (req, res, next) => {
   const expenseId = req.params.expenseId;

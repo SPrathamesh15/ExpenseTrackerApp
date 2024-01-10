@@ -33,7 +33,7 @@
                             </div>
                             <div class="form-group" style='margin-top: 20px'>
                                 <label class='labels'>Enter Amount:</label>
-                                <input type="text" class="form-control" id="expenseamt">
+                                <input type="number" class="form-control" id="expenseamt">
                             </div>
                             <div class="form-group" style='margin-top: 10px'>
                                 <label class='labels'>Enter Description:</label>
@@ -54,24 +54,27 @@
                                 <option value="Travelling">Travelling</option>
                               </select>
                       </div> 
-                        <button type="submit" class="btn btn-primary" style='margin-top: 20px'>Submit</button><button type="click" onclick="window.open('C:/Users/sprat/Downloads/sharpenerProjects/Backend Expense Tracker/report.html', '_blank')" id ="report"class="btn btn-primary" style='margin-top: 20px;margin-left: 10px'>Report</button>
+                        <button type="submit" class="btn btn-primary" style='margin-top: 20px'>Submit</button>
+                        <button type="click" onclick="window.open('C:/Users/sprat/Downloads/sharpenerProjects/Backend Expense Tracker/report.html', '_blank')" id ="report"class="btn btn-primary" style='margin-top: 20px;margin-left: 10px'>Report</button>
                     </form>
                     <button class="bn30" role="button" id='show-leaderboard' style='margin-left: 100px;'>Show LeaderBoard</button><br>
                     <button class="bn30" role="button" id='download' style='margin-left: 100px;'>Download</button>
                 </div>
                 
                 <div class="col-4" style='margin-top: 50px'>
-                    <h1 style='color: white; text-align: center; margin-left: 300px' >Expenses</h1>
+                    <h1 style='color: white; text-align: center; margin-left: 280px' >Expenses</h1>
                     <ul id="items" class="list-group"> </ul>
+                    <div id="pagination-container" class="pagination-container"></div>
                 </div>
-
-                
             </div>
         </div>
         <div class = 'container' style='margin-top: 50px'>
             <h1 style='color: white; text-align: center;letter-spacing: 0.2rem; font-weight: 400' id = 'leaderboard-tag'>LeaderBoard</h1>
             <h1 style='color: white; text-align: center; letter-spacing: 0.2rem; font-weight: 400' id = 'downloadedFiles-tag'>Downloaded Files</h1>
-            <ul id="points-table" class="list-group" style='width: 1000px'> </ul>
+            <ul id="points-table" class="list-group" style='width: 700px; margin-bottom: 50px; margin-left: 300px;'> </ul>
+            <ul id="downloaded-table" class="list-group" style='width: 1000px; margin-top: -50px; margin-left: 150px;'> </ul>
+            <div id="leaderboard-pagination-container" class="pagination-container" style='margin-bottom: 50px;'></div>
+            <div id="files-pagination-container" class="pagination-container" style='margin-bottom: 50px; margin-top: -50px;'></div>
         </div>
     </header>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
