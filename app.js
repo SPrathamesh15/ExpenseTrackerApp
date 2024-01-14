@@ -24,10 +24,12 @@ const Order = require('./models/orders')
 const filesDownloaded = require('./models/filesDownloaded')
 
 const forgotPasswordRequest = require('./models/ForgotPasswordRequests')
+app.use(helmet())
+app.use(cors());
 app.use(bodyParser.urlencoded());
 app.use(express.json());
-app.use(cors());
-app.use(helmet())
+
+
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a'})
 app.use(morgan('combined', { stream: accessLogStream }))
@@ -42,7 +44,10 @@ app.use('/password', forgotPasswordRoutes)
 app.use('/password', resetPasswordRoutes)
 app.use('/report', reportsRoutes)
 
-
+app.use((req, res) => {
+    console.log('URL: ', req.url);
+    res.sendFile(path.join(__dirname, `public/${req.url}`))
+})
 
 // Define the route to show the page
 app.get('/password/reset-password/:token', (req, res) => {
