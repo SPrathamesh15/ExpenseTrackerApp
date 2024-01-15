@@ -72,25 +72,13 @@ async function handlePageLoad(e) {
 }
 
 function updateItemsPerPage() {
-    let itemsPerPage = localStorage.getItem('itemsPerPage');
-    
-    itemsPerPage = itemsPerPage && parseInt(itemsPerPage, 10) > 0 ? itemsPerPage : 10;
-
-    console.log('Items per page updated:', itemsPerPage);
-
     const itemsPerPageSelect = document.getElementById('itemsPerPage');
-                for (let i = 0; i < itemsPerPageSelect.options.length; i++) {
-                    if (itemsPerPageSelect.options[i].value === itemsPerPage.toString()) {
-                        itemsPerPageSelect.options[i].selected = true;
-                        break;
-                    }
-                }
+    const itemsPerPage = itemsPerPageSelect.value;
     localStorage.setItem('itemsPerPage', itemsPerPage);
-
-    console.log('Items per page updated to:', itemsPerPage);
     const timePeriod = getTimePeriod();
     const currentPage = getCurrentPage();
     showTable(timePeriod, currentPage, itemsPerPage);
+    console.log('Items per page updated to:', itemsPerPage);
 }
 
 async function showTable(timePeriod, page = 1, itemsPerPage = 10) {
