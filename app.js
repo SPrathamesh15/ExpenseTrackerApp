@@ -44,6 +44,14 @@ app.use('/password', forgotPasswordRoutes)
 app.use('/password', resetPasswordRoutes)
 app.use('/report', reportsRoutes)
 
+app.use((req, res, next) => {
+    res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/ 'unsafe-inline'; connect-src 'self' http://13.126.112.76:3000"
+    );
+    next();
+});
+
 app.use((req, res) => {
     console.log('URL: ', req.url);
     res.sendFile(path.join(__dirname, `public/${req.url}`))
