@@ -72,8 +72,19 @@ async function handlePageLoad(e) {
 }
 
 function updateItemsPerPage() {
+    let itemsPerPage = localStorage.getItem('itemsPerPage');
+    
+    itemsPerPage = itemsPerPage && parseInt(itemsPerPage, 10) > 0 ? itemsPerPage : 10;
+
+    console.log('Items per page updated:', itemsPerPage);
+
     const itemsPerPageSelect = document.getElementById('itemsPerPage');
-    const itemsPerPage = itemsPerPageSelect.value;
+                for (let i = 0; i < itemsPerPageSelect.options.length; i++) {
+                    if (itemsPerPageSelect.options[i].value === itemsPerPage.toString()) {
+                        itemsPerPageSelect.options[i].selected = true;
+                        break;
+                    }
+                }
     localStorage.setItem('itemsPerPage', itemsPerPage);
 
     console.log('Items per page updated to:', itemsPerPage);
