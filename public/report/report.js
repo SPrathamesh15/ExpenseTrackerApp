@@ -14,6 +14,7 @@ var yearlySection = document.getElementById('yearly-section');
 let currentTimePeriod = localStorage.getItem('currentPage') || 'daily'
 
 function getTimePeriod() {
+    console.log('gettimeperiod: ', currentTimePeriod)
     return currentTimePeriod;
 }
 
@@ -83,7 +84,7 @@ function updateItemsPerPage() {
 
 async function showTable(timePeriod, page = 1, itemsPerPage = 10) {
     const token = localStorage.getItem('token');
-    console.log('timePeriod: ', timePeriod)
+    console.log('timePeriod: ', timePeriod, page, itemsPerPage)
     try {
         const response = await axios.get(`http://13.126.112.76:3000/report/get-report?timePeriod=${timePeriod}&page=${page}&itemsPerPage=${itemsPerPage}`, {
             headers: { 'Authorization': token },
@@ -151,8 +152,6 @@ function formatDate(rawDate) {
     const formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`; // day/month/year
     return formattedDate;
 }
-
-
 
 function showSections(timePeriod) {
     // Hiding all sections
