@@ -11,7 +11,7 @@ var weeklySection = document.getElementById('weekly-section');
 var monthlySection = document.getElementById('monthly-section');
 var yearlySection = document.getElementById('yearly-section');
 
-let currentTimePeriod = localStorage.getItem('currentPage');
+let currentTimePeriod = localStorage.getItem('currentPage') || 'daily'
 
 function getTimePeriod() {
     return currentTimePeriod;
