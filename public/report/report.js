@@ -13,6 +13,7 @@ var yearlySection = document.getElementById('yearly-section');
 
 let currentTimePeriod = localStorage.getItem('currentPage') || 'daily'
 
+
 function getTimePeriod() {
     console.log('gettimeperiod: ', currentTimePeriod)
     return currentTimePeriod;
@@ -68,7 +69,7 @@ async function handlePageLoad(e) {
     const currentPage = getCurrentPage();
     console.log('Current page:', currentPage);
     console.log(getTimePeriod(), currentPage, itemsPerPage)
-    showTable(getTimePeriod(), currentPage, itemsPerPage);
+    showTable(getTimePeriod(), currentPage);
 }
 
 function updateItemsPerPage() {
@@ -82,7 +83,11 @@ function updateItemsPerPage() {
 }
 
 async function showTable(timePeriod, page = 1, itemsPerPage = 10) {
+    if (itemsPerPage === null){
+        localStorage.setItem('itemsPerPage', 10);
+    }
     const token = localStorage.getItem('token');
+    itemsPerPage = localStorage.getItem('itemsPerPage')
     console.log('timePeriod: ', timePeriod, page, itemsPerPage)
     try {
         const response = await axios.get(`http://13.126.112.76:3000/report/get-report?timePeriod=${timePeriod}&page=${page}&itemsPerPage=${itemsPerPage}`, {
