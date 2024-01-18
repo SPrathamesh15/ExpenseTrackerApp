@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h3 style='color: white; text-align: center; margin-top: 30px; letter-spacing: 3px'>This is a <span style='color:#0eeab7'>Sign Up</span> page!</h3>
+        <h3 class = 'head-label-signup'>This is a <span style='color:#0eeab7'>Sign Up</span> page!</h3>
         <form id='addform'>
             <div class="mb-3" style='margin-top: 30px'>
                 <label for="name" class="form-label">Enter Your Name*</label>
@@ -25,10 +25,10 @@
               <input type="password" class="form-control" id="password" required>
               <div id="success-message" style="color: #0eeab7; margin-top: 10px;"></div> <!-- Success message container -->
               <div id="error-message" style="color: red; margin-top: 10px;"></div> <!-- Error message container -->
-              <button type="submit" class="btn btn-primary" style='margin-top: 20px'>Sign Up</button>
+              <button type="submit" class="btn btn-primary">Sign Up</button>
         </div>
         </form>
-        <p style='color: white; margin-left: 100px'> Already have a account? <a href="../login/login.html" style="color: white; text-decoration: underline;">Log In</a></p>
+        <p class='p'> Already have a account? <a href="../login/login.html" style="color: white; text-decoration: underline;">Log In</a></p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js"></script>
     <script src='./signup.js'></script>

@@ -4,7 +4,6 @@
     font-weight: 600;
     margin-left: 100px;
 }
-
 .itemsperpage{
   background-color: black;
   padding: 5px;
@@ -16,9 +15,8 @@
 .pagination-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px; /* Adjust the margin as needed */
+  margin-top: 20px;
 }
-
 .pagination-btn {
   background-color: transparent;
   border-radius: 20px;
@@ -38,7 +36,6 @@
   padding-left: 12px;
   padding-right: 12px;
 }
-
 .btn-outline-primary{
   border-width: 2px;
   border-radius: 30px;
@@ -71,7 +68,6 @@
   border-color: white;
   font-weight: 700;
 }
-
 .bn30 {
     border: 5em;
     cursor: pointer;
@@ -87,8 +83,8 @@
     transition: box-shadow 0.25s;
     color: white;
     margin-top: 15px;
+    margin-left: 100px;
   }
-  
   .bn30 .text {
     background-clip: text;
     -webkit-background-clip: text;
@@ -190,6 +186,7 @@
     border-radius: 10px;
     border-width: 3px;
     font-weight: 500;
+    margin-left: 100px
 }
 .labels{
     padding-bottom: 10px;
@@ -286,6 +283,18 @@
   transition: 300ms;
 }
 
+.head-expense{
+  color: white; 
+  text-align: center; 
+  margin-left: 280px
+}
+
+.head-leaderboard{
+  color: white; 
+  text-align: center;
+  letter-spacing: 0.2rem; 
+  font-weight: 400
+}
 .button-64:hover span {
   background: none;
 }
@@ -296,10 +305,6 @@
     min-width: 196px;
   }
 }
-
-
-
-
 .col-6{
     border: solid;
     border-color: #0eeab7;
@@ -318,4 +323,110 @@ li:nth-child(odd) {
     background-color: white;
     margin-top: 10px;
     border: none;
+}
+#points-table{
+  width: 700px; 
+  margin-bottom: 50px; 
+  margin-left: 300px;
+}
+.head-report{
+  text-align: center; 
+  color: #06fac1;
+  font-weight:300 ;
+  margin-top: 50px; 
+  font-size: 50px; 
+  letter-spacing: 0.4rem; 
+  border: solid; 
+  border-width: 5px; 
+  border-color: white; 
+  padding: 10px
+}
+#downloaded-table{
+  width: 1000px;
+  margin-top: -50px; 
+  margin-left: 150px;
+}
+@media  screen and (max-width: 600px) {
+  .col-6{
+    border: none;
+    margin-top: 50px;
+    padding-bottom: 100px;
+}
+.form-container{
+  margin-left: 50px;
+}
+.headline{
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+  margin-left: 50px;
+  margin-right: -50px;
+}
+.select{
+  margin-left: 50px;
+}
+.btn.btn-primary{
+  margin-left: 50px
+}
+.bn30{
+  margin-left: 50px;
+  margin-right: -100px;
+}
+.premium-status{
+  color: #06fac1;
+  font-size: 20px;
+}
+.header{
+  margin-right: 50px;
+  margin-left: 50px;
+}
+.list-group-item{
+  margin-left: -300px;
+  width: 380px;
+  padding: 5px;
+}
+.head-expense{
+  margin-top: 700px;
+  margin-left: -350px
+}
+.pagination-container{
+  margin-bottom: 200px;
+}
+#leaderboard-pagination-container .pagination-btn {
+  margin-bottom: 300px;
+}
+.head-leaderboard{
+  margin-top: -200px;
+}
+#points-table{
+  width: 400px;
+  margin-left: 0px;
+  margin-bottom: 50px;
+}
+#downloaded-table{
+  width: 400px;
+  margin-left: 0px;
+  margin-bottom: 30px;
+}
+#files-pagination-container .pagination-btn {
+  margin-bottom: 300px;
+}
+.lists {
+  white-space: nowrap;
+  overflow: scroll;
+  text-overflow:unset 
+}
+.head-report{ 
+  font-size: 30px; 
+  letter-spacing: 0.4rem; 
+  border: solid; 
+  border-width: 3px; 
+  border-color: white; 
+  padding: 5px
+}
+#daily-btn .report{
+  margin-top: 50px;
+  margin-left: 1000px;
+}
+
 }

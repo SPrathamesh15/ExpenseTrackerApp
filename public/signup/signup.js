@@ -21,7 +21,7 @@ function addUser(e) {
         console.log(response)
         alert('You have Signed Up Successfully! Now you can Log In')
         successMessageContainer.textContent = "User Signed Up Successfully!";
-        window.location.href = 'C:/Users/sprat/Downloads/sharpenerProjects/Backend Expense Tracker/logIn.html'
+        window.location.href = '../login/login.html'
     })
     .catch(err => {
         // alert('Uer Already Exists! You can Log In')
