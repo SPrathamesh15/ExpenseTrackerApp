@@ -346,6 +346,29 @@ li:nth-child(odd) {
   margin-top: -50px; 
   margin-left: 150px;
 }
+.itemsperpage-head{
+  color:white; 
+  font-size: 20px;
+}
+
+table {
+  border-radius: 20px;
+  padding: 30px;
+  border-collapse: collapse;
+  width: 80%;
+  background-color: #06fac1;
+  margin-left: 150px
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  font-size: 15px;
+  border-bottom: 1px solid black;
+}
+tr:hover {
+  background-color:white;
+}
 @media  screen and (max-width: 600px) {
   .col-6{
     border: none;
@@ -353,23 +376,24 @@ li:nth-child(odd) {
     padding-bottom: 100px;
 }
 .form-container{
-  margin-left: 50px;
+  margin-left: 40px;
+  
 }
 .headline{
   font-size: 20px;
   color: white;
   font-weight: 600;
-  margin-left: 50px;
+  margin-left: 40px;
   margin-right: -50px;
 }
 .select{
-  margin-left: 50px;
+  margin-left: 40px;
 }
 .btn.btn-primary{
-  margin-left: 50px
+  margin-left: 40px
 }
 .bn30{
-  margin-left: 50px;
+  margin-left: 40px;
   margin-right: -100px;
 }
 .premium-status{
@@ -378,7 +402,9 @@ li:nth-child(odd) {
 }
 .header{
   margin-right: 50px;
-  margin-left: 50px;
+  margin-left: 30px;
+  font-size: 30px;
+  margin-bottom: -20px
 }
 .list-group-item{
   margin-left: -300px;
@@ -422,11 +448,36 @@ li:nth-child(odd) {
   border: solid; 
   border-width: 3px; 
   border-color: white; 
-  padding: 5px
+  padding: 5px;
 }
-#daily-btn .report{
-  margin-top: 50px;
-  margin-left: 1000px;
+#daily-btn {
+  margin-top: 30px;
+  margin-left: 30px;
 }
-
+#weekly-btn {
+  margin-top: 20px;
+  margin-left: 25px;
+}
+#monthly-btn {
+  margin-top: 20px;
+  margin-left: 22px;
+}
+#yearly-btn {
+  margin-top: 20px;
+  margin-left: 26px;
+}
+.itemsperpage-head{
+  margin-left: 50px;
+}
+th, td {
+  padding: 10px;
+  text-align: center;
+  font-size: 12px;
+}
+table {
+  border-radius: 20px;
+  width: 40%;
+  margin-left: 10px;
+  margin-bottom: 200px;
+}
 }

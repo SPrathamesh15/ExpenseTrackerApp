@@ -13,7 +13,7 @@
   <h1 class='head-report'>REPORT</h1>
 
     <div style='margin-top: 50px;margin-left: 50px'>
-        <label for="itemsPerPage" style='color:white; font-size: 20px;'>Items per Page:</label>
+        <label for="itemsPerPage" class='itemsperpage-head'>Items per Page:</label>
           <select id="itemsPerPage" onchange="updateItemsPerPage()" class='itemsperpage'>
             <option value="5">5</option>
             <option value="10">10</option>
@@ -32,7 +32,7 @@
 <div id="daily-section">
   <!-- Daily Expenses Table -->
   <h3 style='text-align: center; color: white; font-weight:400 ; margin-top: 30px; margin-bottom: 15px; letter-spacing: 0.2rem' id='daily'>Daily</h3>
-  <table class="table table-success table-striped table-hover table-bordered report-table" id="daily-table">
+  <table id="daily-table">
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -51,7 +51,7 @@
 <div id="weekly-section">
   <!-- Weekly Expenses Table -->
   <h3 style='text-align: center; color: white;font-weight:400 ; margin-top: 30px; margin-bottom: 15px; letter-spacing: 0.2rem' id='weekly'>Weekly</h3>
-  <table class="table table-success table-striped table-hover table-bordered report-table" id="weekly-table">
+  <table id="weekly-table">
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -70,7 +70,7 @@
 <div id="monthly-section">
   <!-- Monthly Expenses Table -->
   <h3 style='text-align: center; color: white;font-weight:400 ; margin-top: 30px; margin-bottom: 15px; letter-spacing: 0.2rem' id='monthly'>Monthly</h3>
-  <table class="table table-success table-striped table-hover table-bordered report-table" id="monthly-table">
+  <table id="monthly-table">
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -89,7 +89,7 @@
 <div id="yearly-section">
   <!-- Yearly Expenses Table -->
   <h3 style='text-align: center; color: white;font-weight:400 ; margin-top: 30px; margin-bottom: 15px; letter-spacing: 0.2rem' id='year'>Yearly</h3>
-  <table class="table table-success table-striped table-hover table-bordered report-table" id="yearly-table">
+  <table  id="yearly-table">
       <thead>
         <tr>
           <th scope="col">Date</th>

@@ -147,8 +147,16 @@ function showReportsOnScreen(response, timePeriod, itemsPerPage) {
 
     // Highlight the current page button
     const currentPageButton = document.querySelector(`#pagination-container button:nth-child(${currentPage})`);
-    currentPageButton.classList.add('active');
-    currentPageButton.className = 'current-page-btn'
+    console.log('current page: ', currentPageButton)
+    if (currentPageButton !== null){
+        currentPageButton.classList.add('active');
+        currentPageButton.className = 'current-page-btn'
+    }
+    
+    else{
+        alert('There are no Daily Expenses!')
+    }
+    
 }
 
 function formatDate(rawDate) {
