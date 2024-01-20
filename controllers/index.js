@@ -32,8 +32,6 @@ exports.postAddExpense = async (req, res, next) => {
       },
       { transaction: t }
     );
-
-    // Updating totalExpense or totalIncome in UserDetails based on the radio button selection
     const user = await User.findByPk(userId, { transaction: t });
     if (user) {
       if (isIncome) {
@@ -137,7 +135,6 @@ exports.getFileURLS = async (req, res) => {
 exports.deleteExpense = async (req, res, next) => {
   const expenseId = req.params.expenseId;
   const t = await sequelize.transaction();
-
   try {
     // Find the expense to check if it belongs to the logged-in user
     const expense = await Expense.findOne({
@@ -149,20 +146,17 @@ exports.deleteExpense = async (req, res, next) => {
       await t.rollback();
       return res.status(404).json({ message: 'Expense not found or unauthorized' });
     }
-
     const user = await User.findByPk(req.user.id, { transaction: t });
     if (user) {
-      user.totalExpense = user.totalExpense - expense.expenseAmount;
+      user.totalExpense = user.totalExpense - expense.expense;
       await user.save({ transaction: t });
     }
-    // Only delete the expense if it belongs to the logged-in user
     const result = await Expense.destroy({
       where: { id: expenseId },
       transaction: t
     });
 
     await t.commit();
-
     res.status(200).json({ message: 'Expense deleted successfully', result });
   } catch (err) {
     await t.rollback();
