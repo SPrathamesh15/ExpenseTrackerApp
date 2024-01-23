@@ -154,7 +154,7 @@ function showReportsOnScreen(response, timePeriod, itemsPerPage) {
     }
     
     else{
-        alert('There are no Daily Expenses!')
+        alert(`There are no ${currentTimePeriod} expenses!`)
     }
     
 }
