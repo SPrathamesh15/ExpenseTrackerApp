@@ -51,6 +51,12 @@ body{
 .btn-primary{
     margin-top: 10px;
 }
+.head-label-reset{
+    color: white; 
+    text-align: center; 
+    margin-top: 120px; 
+    letter-spacing: 3px;
+}
 @media  screen and (max-width: 600px) {
     .container {border-radius: 50px;
     background-color: black;
@@ -66,6 +72,15 @@ body{
         margin-bottom: 150px;
         letter-spacing: 3px;
         border: solid;
+        padding: 10px;
+    }
+    .head-label-reset{
+        color: white; 
+        text-align: center; 
+        margin-top: -120px; 
+        margin-bottom: 100px;
+        letter-spacing: 3px;
+        border:solid;
         padding: 10px;
     }
     .head-label-signup{
