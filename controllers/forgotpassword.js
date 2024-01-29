@@ -17,7 +17,7 @@ exports.forgotPassword = async (req, res) => {
         },
     });
     const resetToken = uuidv4(); // It Generates a unique reset token
-    const resetPasswordURL = `http://13.126.112.76:3000/resetpassword/resetpassword.html/${resetToken}`;
+    const resetPasswordURL = `http://13.126.112.76:3000/password/reset-password/${resetToken}`;
 
     try {
         // Finding the user based on the provided email
