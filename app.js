@@ -52,6 +52,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 app.get('/password/reset-password/:token', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/resetpassword/resetpassword.html'));
 });
