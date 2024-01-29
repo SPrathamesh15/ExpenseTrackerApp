@@ -47,10 +47,15 @@ app.use('/report', reportsRoutes)
 app.use((req, res, next) => {
     res.setHeader(
         'Content-Security-Policy',
-        "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://checkout.razorpay.com 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/ 'unsafe-inline'; connect-src 'self' http://13.126.112.76:3000"
+        "default-src 'self' https: 'unsafe-inline';" + 
+        "script-src 'self' https://cdnjs.cloudflare.com https://checkout.razorpay.com 'unsafe-inline' 'unsafe-eval';" + 
+        "style-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/ 'unsafe-inline';" + 
+        "connect-src 'self' http://13.126.112.76:3000 https://api.razorpay.com;" +
+        "frame-src https://api.razorpay.com;"
     );
     next();
 });
+
 
 
 app.get('/password/reset-password/:token', (req, res) => {
