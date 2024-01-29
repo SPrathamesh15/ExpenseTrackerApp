@@ -15,10 +15,10 @@ exports.forgotPassword = async (req, res) => {
             user: process.env.USER_EMAIL,
             pass: process.env.FORGOT_PASSWORD_API_KEY,
         },
+        socketTimeout: 20 * 1000,
     });
-
     const resetToken = uuidv4(); // It Generates a unique reset token
-    const resetPasswordURL = `http://localhost:3000/password/reset-password/${resetToken}`;
+    const resetPasswordURL = `http://13.126.112.76:3000/password/reset-password/${resetToken}`;
 
     try {
         // Finding the user based on the provided email
