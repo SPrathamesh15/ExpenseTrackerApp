@@ -52,16 +52,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get('/password/reset-password/:token', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/resetpassword/resetpassword.html'));
+});
+
 app.use((req, res) => {
     console.log('URL: ', req.url);
     res.sendFile(path.join(__dirname, `public/${req.url}`))
 })
-
-// Define the route to show the page
-app.get('/password/reset-password/:token', (req, res) => {
-    // Sending the resetPassword.html file
-    res.sendFile(path.join(__dirname, 'resetPassword.html'));
-});
 
 //Association one to many
 User.hasMany(Expense)
