@@ -2,6 +2,9 @@ html, body{
     height: 100%;
     width: 100%;
 }
+::-webkit-scrollbar {
+    display: none;
+}
 .head-label{
     color: white; 
     text-align: center; 

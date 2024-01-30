@@ -4,6 +4,9 @@
     font-weight: 600;
     margin-left: 100px;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 .itemsperpage{
   background-color: black;
   padding: 5px;
@@ -352,7 +355,7 @@ li:nth-child(odd) {
 }
 
 table {
-  border-radius: 20px;
+  border-radius: 30px;
   padding: 30px;
   border-collapse: collapse;
   width: 80%;
